@@ -1,0 +1,24 @@
+# Terraform downloaded providers and modules
+**/.terraform/*
+
+# Terraform state and saved plans
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+
+# Local variable values
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Credentials and local secrets
+.env
+.env.*
+!.env.example
+.aws/
+*kubeconfig*
+*.pem
+*.key

@@ -1,0 +1,27 @@
+name: Runner check
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: [self-hosted, Linux, X64, aws-lab]
+    timeout-minutes: 5
+
+    steps:
+      - name: Check user and machine
+        run: |
+          whoami
+          hostname
+
+      - name: Check installed tools
+        run: |
+          git --version
+          aws --version
+          terraform version
+          kubectl version --client
+
+      - name: Check AWS identity
+        run: aws sts get-caller-identity --region eu-north-1 --no-cli-pager

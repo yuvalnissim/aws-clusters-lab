@@ -18,9 +18,11 @@ jobs:
 
     env:
       AWS_REGION: eu-north-1
-      KUBECONFIG: ${{ runner.temp }}/internal-demo-kubeconfig
 
     steps:
+      - name: Set temporary kubeconfig path
+        run: echo "KUBECONFIG=$RUNNER_TEMP/internal-demo-kubeconfig" >> "$GITHUB_ENV"
+
       - name: Download repository
         uses: actions/checkout@v6
         with:

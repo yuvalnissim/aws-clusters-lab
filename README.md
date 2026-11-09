@@ -127,3 +127,7 @@ Do not assume stopping EC2 instances stops all lab costs.
 ## Architecture and evidence
 
 See [architecture and validation evidence](docs/architecture.md).
+
+## Manual setup
+
+See [manual setup and rebuild notes](docs/manual-setup.md).

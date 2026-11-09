@@ -1,0 +1,14 @@
+﻿[
+    {
+        "Name": "k8s-default-internal-d2a24a8c2d",
+        "Scheme": "internal",
+        "State": "active",
+        "DNS": "internal-k8s-default-internal-d2a24a8c2d-191901895.eu-north-1.elb.amazonaws.com"
+    },
+    {
+        "Name": "k8s-default-publicde-9931fc6c91",
+        "Scheme": "internet-facing",
+        "State": "active",
+        "DNS": "k8s-default-publicde-9931fc6c91-1413184358.eu-north-1.elb.amazonaws.com"
+    }
+]

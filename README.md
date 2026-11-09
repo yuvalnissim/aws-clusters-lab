@@ -122,3 +122,8 @@ These manual installation steps are not yet fully automated.
 
 Do not delete the local Terraform state before cleanup is complete.
 Do not assume stopping EC2 instances stops all lab costs.
+
+
+## Architecture and evidence
+
+See [architecture and validation evidence](docs/architecture.md).

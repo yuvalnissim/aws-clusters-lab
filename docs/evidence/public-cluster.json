@@ -1,0 +1,7 @@
+﻿{
+    "Name": "aws-clusters-lab-public",
+    "Status": "ACTIVE",
+    "Version": "1.37",
+    "PrivateAPI": true,
+    "PublicAPI": false
+}

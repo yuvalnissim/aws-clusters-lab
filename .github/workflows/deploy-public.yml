@@ -1,0 +1,53 @@
+name: Deploy public demo
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-public-demo
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, Linux, X64, aws-lab]
+    timeout-minutes: 10
+
+    env:
+      AWS_REGION: eu-north-1
+
+    steps:
+      - name: Set temporary kubeconfig path
+        run: echo "KUBECONFIG=$RUNNER_TEMP/public-demo-kubeconfig" >> "$GITHUB_ENV"
+
+      - name: Download repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure cluster connection
+        run: |
+          aws eks update-kubeconfig \
+            --name aws-clusters-lab-public \
+            --region "$AWS_REGION" \
+            --alias lab-public
+
+      - name: Deploy application
+        run: |
+          kubectl --context lab-public apply -f k8s/public/demo.yml
+          kubectl --context lab-public -n default rollout status \
+            deployment/public-demo --timeout=180s
+
+      - name: Show application status
+        run: |
+          kubectl --context lab-public -n default get pods \
+            -l app=public-demo -o wide
+          kubectl --context lab-public -n default get service public-demo
+          kubectl --context lab-public -n default get ingress public-demo
+
+      - name: Remove temporary connection file
+        if: always()
+        run: rm -f "$KUBECONFIG"

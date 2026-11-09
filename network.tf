@@ -40,10 +40,17 @@ resource "aws_subnet" "lab" {
   availability_zone       = each.value.az
   map_public_ip_on_launch = false
 
-  tags = {
-    Name    = "${local.project_name}-${each.key}"
-    Project = local.project_name
-  }
+  tags = merge(
+    {
+      Name    = "${local.project_name}-${each.key}"
+      Project = local.project_name
+    },
+    startswith(each.key, "private_") ? {
+      "kubernetes.io/role/internal-elb" = "1"
+      } : {
+      "kubernetes.io/role/elb" = "1"
+    }
+  )
 }
 
 output "vpc_id" {

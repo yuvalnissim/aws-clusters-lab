@@ -1,0 +1,50 @@
+name: Deploy internal demo
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-internal-demo
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, Linux, X64, aws-lab]
+    timeout-minutes: 10
+
+    env:
+      AWS_REGION: eu-north-1
+      KUBECONFIG: ${{ runner.temp }}/internal-demo-kubeconfig
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure cluster connection
+        run: |
+          aws eks update-kubeconfig \
+            --name aws-clusters-lab-internal \
+            --region "$AWS_REGION" \
+            --alias lab-internal
+
+      - name: Deploy application
+        run: |
+          kubectl --context lab-internal apply -f k8s/internal/demo.yml
+          kubectl --context lab-internal -n default rollout status \
+            deployment/internal-demo --timeout=180s
+
+      - name: Show application status
+        run: |
+          kubectl --context lab-internal -n default get pods \
+            -l app=internal-demo -o wide
+          kubectl --context lab-internal -n default get service internal-demo
+
+      - name: Remove temporary connection file
+        if: always()
+        run: rm -f "$KUBECONFIG"

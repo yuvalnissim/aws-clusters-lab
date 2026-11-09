@@ -131,3 +131,12 @@ See [architecture and validation evidence](docs/architecture.md).
 ## Manual setup
 
 See [manual setup and rebuild notes](docs/manual-setup.md).
+
+
+## Environment status
+
+The lab was successfully deployed and validated, then destroyed on
+November 9, 2026 to avoid ongoing costs.
+
+The application URLs are no longer active. Architecture documentation,
+deployment workflows, and validation screenshots remain in this repository.

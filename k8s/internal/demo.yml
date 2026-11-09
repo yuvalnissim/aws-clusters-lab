@@ -57,3 +57,32 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
+
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: internal-demo
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/security-groups: sg-080aa4debf80de75a
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/success-codes: "200"
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: internal-demo
+                port:
+                  number: 80
